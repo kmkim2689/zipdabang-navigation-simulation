@@ -80,3 +80,8 @@ sealed class SharedScreen(val route: String) {
     data class RecipeDetail(val recipeId: Long)
         : SharedScreen(route = "recipe?id={recipeId}")
 }
+
+sealed class MyInternalScreen(val route: String) {
+    object Following: MyInternalScreen(route = "my/following")
+    object MyRecipe: MyInternalScreen("my/recipe")
+}
