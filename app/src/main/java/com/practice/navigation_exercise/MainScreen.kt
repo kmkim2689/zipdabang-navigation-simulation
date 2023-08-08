@@ -1,15 +1,21 @@
 package com.practice.navigation_exercise
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -19,8 +25,8 @@ import androidx.navigation.compose.rememberNavController
 import com.practice.navigation_exercise.component.AppBarDefault
 import com.practice.navigation_exercise.core.navigation.BottomBarScreen
 import com.practice.navigation_exercise.core.navigation.MainNavGraph
-import com.practice.navigation_exercise.core.navigation.SEARCH_ROUTE
 import com.practice.navigation_exercise.core.navigation.SharedScreen
+import kotlin.properties.Delegates
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -44,7 +50,7 @@ fun MainScreen(navController: NavHostController) {
             )
         }
     ) {
-        MainNavGraph(navController = navControllerForMainScreen)
+        MainNavGraph(outerNavController = navController, innerNavController = navControllerForMainScreen)
     }
 }
 
@@ -71,7 +77,6 @@ fun BottomBar(navController: NavHostController) {
             )
         }
     }
-
 }
 
 @Composable
@@ -80,6 +85,41 @@ fun RowScope.AddItem(
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {
+//    var isSelectedBefore = currentDestination?.hierarchy?.any { it.route == screen.route } == true
+
+
+
+    // 현재 백스택 가장 상단에 올라가 있는 화면
+    val currentBackStackEntry = currentDestination?.route?.split("/")?.get(0)
+    Log.d("currentBackstackentry", "${currentBackStackEntry}")
+
+    val isSelected = currentBackStackEntry == screen.route
+
+    /*val isSelect =
+        if (currentBackStackEntry in listOf<String>("home", "market", "basket", "my", "recipe")) {
+
+        }
+        when (currentBackStackEntry!!) {
+        "home" -> {
+            true
+        }
+        "market" -> {
+            true
+        }
+        "basket" -> {
+            true
+        }
+        "my" -> {
+            true
+        }
+        "recipe" -> {
+            true
+        }
+        else -> {
+            false
+        }
+    }*/
+
     BottomNavigationItem(
         label = {
             Text(text = screen.title)
@@ -91,14 +131,19 @@ fun RowScope.AddItem(
                 launchSingleTop = true
             }
         },
-        icon = { 
+        icon = {
+            val iconColor = if (isSelected) {
+                MaterialTheme.colorScheme.primary // 선택되었을 때의 아이콘 색
+            } else {
+                LocalContentColor.current.copy(alpha = ContentAlpha.medium) // 선택되지 않았을 때의 아이콘 색
+            }
+
             Icon(
                 imageVector = screen.icon,
-                contentDescription = "Nav Icon"
+                contentDescription = "Nav Icon",
+                tint = iconColor
             )
         },
-        selected = currentDestination?.hierarchy?.any {
-            it.route == screen.route
-        } == true
+        selected = isSelected,
     )
 }

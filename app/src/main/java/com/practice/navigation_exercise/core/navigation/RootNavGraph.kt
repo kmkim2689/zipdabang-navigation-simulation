@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.practice.navigation_exercise.HomeDetailScreen
 import com.practice.navigation_exercise.MainScreen
 import com.practice.navigation_exercise.SearchScreen
 import com.practice.navigation_exercise.SplashScreen
@@ -39,6 +40,12 @@ fun RootNavGraph(
             )
         ) { backStackEntry ->
             SearchScreen(navController = navController, query = backStackEntry.arguments?.getString("query"))
+        }
+
+        composable(
+            route = HomeScreen.Detail.route
+        ) {
+            HomeDetailScreen()
         }
     }
 }

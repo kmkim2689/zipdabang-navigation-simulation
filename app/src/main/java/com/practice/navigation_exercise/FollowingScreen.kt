@@ -20,6 +20,6 @@ fun FollowingScreen() {
         Text(text = "FollowerScreen")
         Text(text = "팔로워 목록")
         Text(text = "김기문")
-        Text(text = "케이엠ㅏ")
+        Text(text = "케이엠")
     }
 }

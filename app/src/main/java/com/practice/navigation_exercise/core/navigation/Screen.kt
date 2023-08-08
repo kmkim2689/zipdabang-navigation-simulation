@@ -13,13 +13,11 @@ const val ROOT_ROUTE = "root"
 const val MAIN_ROUTE = "main"
 const val AUTH_ROUTE = "auth"
 const val SPLASH_ROUTE = "splash"
-const val SEARCH_ROUTE = "search"
 
 // LoginScreen or AuthScreen
 sealed class AuthScreen(val route: String) {
     object SignIn: AuthScreen(route = "auth/sign_in")
     object SignUp: AuthScreen(route = "auth/sign_up/{email}")
-
 }
 
 sealed class BottomBarScreen(
@@ -61,7 +59,7 @@ sealed class GoodsScreen(val route: String) {
 
 sealed class HomeScreen(val route: String) {
     object Guide: HomeScreen(route = "home/guide")
-
+    object Detail: HomeScreen(route = "home/detail")
 }
 
 sealed class RecipeScreen(val route: String) {

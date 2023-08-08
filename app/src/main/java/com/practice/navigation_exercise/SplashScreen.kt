@@ -34,7 +34,6 @@ fun SplashScreen(navController: NavHostController) {
                 inclusive = true
             }
             launchSingleTop = true
-
         }
     }
 }

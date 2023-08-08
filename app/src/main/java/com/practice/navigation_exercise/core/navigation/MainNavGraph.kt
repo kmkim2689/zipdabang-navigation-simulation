@@ -15,16 +15,15 @@ import com.practice.navigation_exercise.MyScreen
 import com.practice.navigation_exercise.RecipeScreen
 
 @Composable
-fun MainNavGraph(navController: NavHostController) {
+fun MainNavGraph(outerNavController: NavHostController, innerNavController: NavHostController) {
     NavHost(
         startDestination = BottomBarScreen.Home.route,
-        navController = navController
+        navController = innerNavController
     ) {
-
         composable(
             route = BottomBarScreen.Home.route
         ) {
-            HomeScreen()
+            HomeScreen(outerNavController)
         }
         composable(
             route = BottomBarScreen.Basket.route
@@ -39,7 +38,7 @@ fun MainNavGraph(navController: NavHostController) {
         composable(
             route = BottomBarScreen.My.route
         ) {
-            MyScreen(navController)
+            MyScreen(innerNavController)
         }
         composable(
             route = BottomBarScreen.Recipe.route
