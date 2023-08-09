@@ -1,6 +1,11 @@
 package com.practice.navigation_exercise.core.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -57,9 +62,5 @@ fun MainNavGraph(outerNavController: NavHostController, innerNavController: NavH
         ) {
             MyRecipeScreen()
         }
-
-
-
     }
-
 }

@@ -87,7 +87,7 @@ fun RowScope.AddItem(
 ) {
 //    var isSelectedBefore = currentDestination?.hierarchy?.any { it.route == screen.route } == true
 
-
+    val currentBackStackEntryOriginal = currentDestination?.route
 
     // 현재 백스택 가장 상단에 올라가 있는 화면
     val currentBackStackEntry = currentDestination?.route?.split("/")?.get(0)
@@ -125,11 +125,72 @@ fun RowScope.AddItem(
             Text(text = screen.title)
         },
         onClick = {
-            navController.navigate(screen.route) {
-                // backstack 동작을 설정 -> 뒤로가기 버튼 누를 시, 그냥 나가도록 설정하고 singleTop launchmode로 설정
-                popUpTo(navController.graph.findStartDestination().id)
-                launchSingleTop = true
+            // 현재 백스택에 있는 화면들 라우트 리스트
+            val backStackEntries = navController.backQueue.toList().map {
+                it.destination.route
             }
+
+            Log.d("backstacklist", "$backStackEntries")
+
+            if (currentBackStackEntry != "my" && "my/recipe" in backStackEntries) {
+                navController.navigate("my/recipe") {
+                    popUpTo("my/recipe")
+                    launchSingleTop = true
+                }
+            } else if (currentBackStackEntry != "my" && "my/following" in backStackEntries) {
+                navController.navigate("my/following") {
+                    popUpTo("my/recipe")
+                    launchSingleTop = true
+                }
+            } else {
+                if (currentBackStackEntry == "my") {
+                    navController.navigate(screen.route) {
+                        // backstack 동작을 설정 -> 뒤로가기 버튼 누를 시, 그냥 나가도록 설정하고 singleTop launchmode로 설정
+//                        popUpTo(navController.graph.findStartDestination().id)
+                        launchSingleTop = true
+                    }
+                } else {
+                    navController.navigate(screen.route) {
+                        // backstack 동작을 설정 -> 뒤로가기 버튼 누를 시, 그냥 나가도록 설정하고 singleTop launchmode로 설정
+                        popUpTo(navController.graph.findStartDestination().id)
+                        launchSingleTop = true
+                    }
+                }
+            }
+
+//            if (listOf<String>("my/following", "my/recipe" !in backstackEntrie)) {
+//                navController.
+//            }
+//
+//
+//                // backstack 동작을 설정 -> 뒤로가기 버튼 누를 시, 그냥 나가도록 설정하고 singleTop launchmode로 설정
+//                if (screen.route !in listOf<String>("home", "market", "basket", "recipe", "my")) {
+//                    currentBackStackEntry?.let {
+//                        popUpTo()
+//                    }
+//                }
+//
+//                launchSingleTop = true
+//            }
+
+            /*if (currentBackStackEntryOriginal !in listOf<String>("home", "market", "basket", "recipe", "my")) {
+                navController.navigate(screen.route) {
+                    // backstack 동작을 설정 -> 뒤로가기 버튼 누를 시, 그냥 나가도록 설정하고 singleTop launchmode로 설정
+                    currentBackStackEntry?.let {
+                        popUpTo(it) {
+                            inclusive = true
+                        }
+                    }
+                    launchSingleTop = true
+                }
+            } else {
+                navController.navigate(screen.route) {
+                    // backstack 동작을 설정 -> 뒤로가기 버튼 누를 시, 그냥 나가도록 설정하고 singleTop launchmode로 설정
+                    popUpTo(navController.graph.findStartDestination().id)
+                    launchSingleTop = true
+                }
+            }*/
+
         },
         icon = {
             val iconColor = if (isSelected) {
